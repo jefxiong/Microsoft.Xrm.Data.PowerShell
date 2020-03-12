@@ -5507,3 +5507,32 @@ function UnzipCrmRibbon {
         }
     }
 }
+
+
+
+function New-OptionSetValue{
+    # .ExternalHelp Microsoft.Xrm.Data.PowerShell.Help.xml
+        [CmdletBinding()]
+        PARAM(
+            [parameter(Mandatory=$false)]
+            [Microsoft.Xrm.Tooling.Connector.CrmServiceClient]$conn,
+            [parameter(Mandatory=$true, Position=1, ParameterSetName="NameAndFields")]
+            [string]$EntityLogicalName,
+            [parameter(Mandatory=$true, Position=2, ParameterSetName="NameAndFields")]
+            [string]$FieldName,
+            [parameter(Mandatory=$true, Position=3, ParameterSetName="NameAndFields")]
+            [string]$LabelName,
+        [parameter(Mandatory=$true, Position=4, ParameterSetName="NameAndFields")]
+            [string]$LanguageCode
+        )
+    
+        $conn = VerifyCrmConnectionParam $conn
+        $InsertOptionValueRequest = [Microsoft.Xrm.Sdk.Messages.InsertOptionValueRequest]::new();
+        $InsertOptionValueRequest.EntityLogicalName=$EntityLogicalName;
+        $InsertOptionValueRequest.AttributeLogicalName=$FieldName;
+        $InsertOptionValueRequest.Label=[Microsoft.Xrm.Sdk.Label]::new($LabelName,$LanguageCode);
+
+
+       return $conn.Execute($InsertOptionValueRequest)
+    }
+    
